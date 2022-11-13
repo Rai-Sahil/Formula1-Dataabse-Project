@@ -9,7 +9,7 @@ CREATE TABLE `circuits` (
   `country` varchar(255) DEFAULT NULL,
   `altitude` int(11) DEFAULT NULL,
   PRIMARY KEY (`circuitId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 CREATE TABLE `constructorStandings` (
   `constructorStandingsId` int(11) NOT NULL AUTO_INCREMENT,
@@ -18,7 +18,7 @@ CREATE TABLE `constructorStandings` (
   `points` float NOT NULL DEFAULT '0',
   `position` int(11) DEFAULT NULL,
   PRIMARY KEY (`constructorStandingsId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 CREATE TABLE `constructors` (
   `constructorId` int(11) NOT NULL AUTO_INCREMENT,
@@ -26,7 +26,7 @@ CREATE TABLE `constructors` (
   `name` varchar(255) NOT NULL DEFAULT '',
   `nationality` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`constructorId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 CREATE TABLE `driverStandings` (
   `driverStandingsId` int(11) NOT NULL AUTO_INCREMENT,
@@ -35,7 +35,7 @@ CREATE TABLE `driverStandings` (
   `position` int(11) DEFAULT NULL,
   `wins` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`driverStandingsId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 CREATE TABLE `drivers` (
   `driverNum` int(11) NOT NULL AUTO_INCREMENT,
@@ -47,13 +47,13 @@ CREATE TABLE `drivers` (
   `dob` date DEFAULT NULL,
   `nationality` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`driverNum`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 CREATE TABLE `teamPrinciples` (
   `teamPrincipleID` int(11) NOT NULL AUTO_INCREMENT,
   `principleName` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`teamPrincipleID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 CREATE TABLE `chasis` (
   `name` int(11) NOT NULL AUTO_INCREMENT,
@@ -65,13 +65,13 @@ CREATE TABLE `chasis` (
   `coolingSystem` varchar(255) DEFAULT NULL,
   `powerUnit` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
-CREATE TABLE `engineProvide` (
+CREATE TABLE `engineProvider` (
   `constructorName` varchar(255) NOT NULL DEFAULT '',
   `engineName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`constructorName`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 
 CREATE TABLE `seasons` (
@@ -81,7 +81,7 @@ CREATE TABLE `seasons` (
   `constructorPoints` int(11) NOT NULL DEFAULT '0',
   `driverPoints` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`year`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 
 
