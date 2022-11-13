@@ -1,7 +1,7 @@
 USE f1db;
 
 
-## Kasra part
+## Kasra part of UoD
 CREATE TABLE `circuits` (
   `circuitId` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
@@ -87,7 +87,7 @@ CREATE TABLE `seasons` (
 
 
 
-## Nav's 2nd part of UoD
+## Navs second part of UoD
 
 
 CREATE TABLE `constructorResults` (
