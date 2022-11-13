@@ -23,3 +23,6 @@ This repository contains a mySQL database for the Formual 1 Racing. It includes 
 * Engine Providers
 * Team Principals
 * Chasis
+
+## Release artifacts are available in the following formats:##
+MySQL Only
