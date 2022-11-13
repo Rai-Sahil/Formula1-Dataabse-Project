@@ -49,31 +49,6 @@ CREATE TABLE `drivers` (
   PRIMARY KEY (`driverNum`)
 );
 
-CREATE TABLE `teamPrinciples` (
-  `teamPrincipleID` int(11) NOT NULL AUTO_INCREMENT,
-  `principleName` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`teamPrincipleID`)
-);
-
-CREATE TABLE `chasis` (
-  `name` int(11) NOT NULL AUTO_INCREMENT,
-  `engineID` int(11) DEFAULT NULL,
-  `gearbox` varchar(3) DEFAULT NULL,
-  `tranmission` varchar(255) NOT NULL DEFAULT '',
-  `fuelSystem` varchar(255) NOT NULL DEFAULT '',
-  `hydraulic` varchar(255) NOT NULL DEFAULT '',
-  `coolingSystem` varchar(255) DEFAULT NULL,
-  `powerUnit` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`name`)
-);
-
-CREATE TABLE `engineProvider` (
-  `constructorName` varchar(255) NOT NULL DEFAULT '',
-  `engineName` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`constructorName`)
-);
-
-
 CREATE TABLE `seasons` (
   `year` int(11) NOT NULL DEFAULT '0',
   `driverWinner` varchar(255) DEFAULT NULL,
@@ -168,13 +143,43 @@ CREATE TABLE `sprintResults` (
 );
 
 
-CREATE TABLE `tireCompounds` (
-  `tireId` int(11) NOT NULL AUTO_INCREMENT,
-  `hards` varchar(255) NOT NULL DEFAULT '0',
-  `mediums` varchar(255) NOT NULL DEFAULT '0',
-  `softs` varchar(255) NOT NULL DEFAULT '0',
-  `inters` varchar(255) NOT NULL DEFAULT '0',
-  `wets` varchar(255) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`statusId`)
-) ;
+-- SAHIL RAI 
+
+-- Adding new tables after this
+
+-- This is a week enetiy
+# COMPOSITE KEY
+CREATE TABLE  `engineProviders` (
+`constructorName` varchar(255) NOT NULL DEFAULT '',
+`engineName` varchar(255) NOT NULL DEFAULT ''
+)ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `chasis`(
+`engineID` varchar(255) NOT NULL DEFAULT '',
+`gearBox` varchar(255) NOT NULL DEFAULT '',
+`transmission` varchar(255) NOT NULL DEFAULT '',
+`name` varchar(255) NOT NULL DEFAULT '',
+`fuelSystem` varchar(255) NOT NULL DEFAULT '',
+`hydraulics` varchar(255) NOT NULL DEFAULT '',
+`coolingSystem` varchar(255) NOT NULL DEFAULT '',
+`powerUnit` varchar(255) NOT NULL DEFAULT '',
+PRIMARY KEY (`name`)
+)ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE  `teamPrincipals` (
+`teamPrincipalID` varchar(255) NOT NULL DEFAULT '',
+`principalName` varchar(255) NOT NULL DEFAULT '',
+`constructorName` varchar(255) NOT NULL DEFAULT '', -- Foreign key
+PRIMARY KEY (`teamPrincipalID`) -- Subject to change
+)ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+/*
+* SUBJECT TO ADD MORE THINGS
+*/
+CREATE TABLE `tireCompounds`(
+`tireName` varchar(255) NOT NULL DEFAULT '',
+PRIMARY KEY (`tireName`)
+)ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
 
