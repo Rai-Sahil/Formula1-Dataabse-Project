@@ -75,7 +75,8 @@ CREATE TABLE `constructorResults` (
 
 -- Add timing composite key with attr (secs, min, millisecs)
 CREATE TABLE `lapTimes` (
-  `driverId` int(11) NOT NULL,
+  `driverNum` int(11) NOT NULL,
+  `driverName` varchar(200) NOT NULL,
   `lapTimeId` int(11) NOT NULL,
   `raceId` int(11) NOT NULL,
   `lap` int(11) NOT NULL,
