@@ -112,14 +112,13 @@ CREATE TABLE `results` (
   `resultId` int(11) NOT NULL AUTO_INCREMENT,
   `raceId` int(11) NOT NULL DEFAULT '0',
   `constructorId` int(11) NOT NULL DEFAULT '0',
-  `driverNumber` int(11) DEFAULT NULL,
+  `position` int(11) NOT NULL,
+  `driverNum` int(11) NOT NULL,
   `laps` int(11) NOT NULL DEFAULT '0',
   `fastestLap` varchar(255) DEFAULT NULL,
   `fastestLapTime` varchar(255) DEFAULT NULL,
   `grid` int(11) NOT NULL DEFAULT '0',
   `points` float NOT NULL DEFAULT '0',
-  `driverId` int(11) NOT NULL DEFAULT '0',
-  `driverCode` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`resultId`)
 )
 
