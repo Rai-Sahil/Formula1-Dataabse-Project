@@ -1,5 +1,4 @@
-USE f1db;
-
+use f1;
 
 ## Kasra part of UoD
 CREATE TABLE `circuits` (
@@ -11,21 +10,31 @@ CREATE TABLE `circuits` (
   PRIMARY KEY (`circuitId`)
 );
 
-CREATE TABLE `constructorStandings` (
-  `constructorStandingsId` int(11) NOT NULL AUTO_INCREMENT,
-  `raceId` int(11) NOT NULL DEFAULT '0',
-  `constructorId` int(11) NOT NULL DEFAULT '0',
-  `points` float NOT NULL DEFAULT '0',
-  `position` int(11) DEFAULT NULL,
-  PRIMARY KEY (`constructorStandingsId`)
-);
-
 CREATE TABLE `constructors` (
   `constructorId` int(11) NOT NULL AUTO_INCREMENT,
   `constructorPrincipal` varchar(255) NOT NULL DEFAULT '',
   `name` varchar(255) NOT NULL DEFAULT '',
   `nationality` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`constructorId`)
+);
+
+CREATE TABLE `races` (
+  `raceId` int(11) NOT NULL AUTO_INCREMENT,
+  `round` int(11) NOT NULL DEFAULT '0',
+  `circuitId` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`raceId`),
+  foreign key (`circuitId`) references circuits(`circuitId`)
+);
+
+CREATE TABLE `constructorStandings` (
+  `constructorStandingsId` int(11) NOT NULL AUTO_INCREMENT,
+  `raceId` int(11) NOT NULL DEFAULT '0',
+  `constructorId` int(11) NOT NULL DEFAULT '0',
+  `points` float NOT NULL DEFAULT '0',
+  `position` int(11) DEFAULT NULL,
+  PRIMARY KEY (`constructorStandingsId`),
+  FOREIGN KEY (`constructorId`) references constructors(`constructorId`),
+  FOREIGN KEY (`raceId`) references races(`raceId`)
 );
 
 CREATE TABLE `driverStandings` (
@@ -70,7 +79,10 @@ CREATE TABLE `constructorResults` (
   `pointsGained` float DEFAULT NULL,
   `raceId` int(11) NOT NULL DEFAULT '0',
   `constructorId` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`constructorResultsId`)
+  PRIMARY KEY (`constructorResultsId`),
+  FOREIGN KEY (`constructorId`) references constructors(`constructorId`),
+  FOREIGN KEY (`raceId`) references races(`raceId`)
+  -- FOREIGN KEY (`pointsGained`) references races(`raceId`)
 );
 
 -- Add timing composite key with attr (secs, min, millisecs)
@@ -81,8 +93,11 @@ CREATE TABLE `lapTimes` (
   `raceId` int(11) NOT NULL,
   `lap` int(11) NOT NULL,
   `position` int(11) DEFAULT NULL,
-  PRIMARY KEY (`raceId`,`driverId`,`lap`),
-  KEY `raceId` (`driverId`)
+  PRIMARY KEY (`raceId`,`driverNum`,`lap`),
+  KEY `raceId` (`driverNum`),
+  foreign key (`raceId`) references races(`raceId`),
+  foreign key (`driverNum`) references drivers(`driverNum`)
+  -- foreign key (`dirverName`) references drivers(`driver
 );
 
 
@@ -95,17 +110,14 @@ CREATE TABLE `qualifying` (
   `number` int(11) NOT NULL DEFAULT '0',
   `position` int(11) DEFAULT NULL,
   `driverNumber` int(11) DEFAULT NULL,
-  PRIMARY KEY (`qualiId`)
-)
+  PRIMARY KEY (`qualiId`),
+  foreign key (`qualiId`) references races(`raceId`),
+  foreign key (`driverNum`) references drivers(`driverNum`),
+  foreign key (`constructorId`) references constructors(`constructorId`)
+);
 
 -- add time mulitvalued with disjoint (qualiTime, raceTime)
 -- add date multivalued with disjoint (qualiDate, raceDate)  
-CREATE TABLE `races` (
-  `raceId` int(11) NOT NULL AUTO_INCREMENT,
-  `round` int(11) NOT NULL DEFAULT '0',
-  `circuitId` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`raceId`),
-);
 
 -- add timing composite key with attr (secs, min, millisecs)
 CREATE TABLE `results` (
@@ -119,27 +131,32 @@ CREATE TABLE `results` (
   `fastestLapTime` varchar(255) DEFAULT NULL,
   `grid` int(11) NOT NULL DEFAULT '0',
   `points` float NOT NULL DEFAULT '0',
-  PRIMARY KEY (`resultId`)
-)
+  PRIMARY KEY (`resultId`),
+  foreign key (`raceId`) references races(`raceId`),
+  foreign key (`driverNum`) references drivers(`driverNum`),
+  foreign key (`constructorId`) references constructors(`constructorId`)
+);
 
 
 -- add timing composite key with attr (minutes, seconds, millisecs)
 CREATE TABLE `sprintResults` (
   `sprintResultId` int(11) NOT NULL AUTO_INCREMENT,
   `raceId` int(11) NOT NULL DEFAULT '0',
-  `driverId` int(11) NOT NULL DEFAULT '0',
+  `position` int(11) NOT NULL DEFAULT '0',
   `constructorId` int(11) NOT NULL DEFAULT '0',
   `number` int(11) NOT NULL DEFAULT '0',
   `points` float NOT NULL DEFAULT '0',
-  `driverCode` int(11) NOT NULL DEFAULT '0',
+  `driverNum` int(11) NOT NULL DEFAULT '0',
   `grid` int(11) NOT NULL DEFAULT '0',
-  `position` int(11) DEFAULT NULL,
   `fastestLap` varchar(255) DEFAULT NULL,
   `fastestLapTime` varchar(255) DEFAULT NULL,
   `positionOrder` int(11) NOT NULL DEFAULT '0',
   `laps` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sprintResultId`),
-  KEY `raceId` (`raceId`)
+  KEY `raceId` (`raceId`),
+  foreign key (`raceId`) references races(`raceId`),
+  foreign key (`driverNum`) references drivers(`driverNum`),
+  foreign key (`constructorId`) references constructors(`constructorId`)
 );
 
 
@@ -151,26 +168,33 @@ CREATE TABLE `sprintResults` (
 # COMPOSITE KEY
 CREATE TABLE  `engineProviders` (
 `constructorName` varchar(255) NOT NULL DEFAULT '',
-`engineName` varchar(255) NOT NULL DEFAULT ''
+`engineName` varchar(255) NOT NULL DEFAULT '',
+`companyName` varchar(255) NOT NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `chasis`(
 `engineID` varchar(255) NOT NULL DEFAULT '',
+`engineName` varchar(255) NOT NULL,
 `gearBox` varchar(255) NOT NULL DEFAULT '',
 `transmission` varchar(255) NOT NULL DEFAULT '',
-`name` varchar(255) NOT NULL DEFAULT '',
+`chasisName` varchar(255) NOT NULL DEFAULT '',
 `fuelSystem` varchar(255) NOT NULL DEFAULT '',
 `hydraulics` varchar(255) NOT NULL DEFAULT '',
 `coolingSystem` varchar(255) NOT NULL DEFAULT '',
 `powerUnit` varchar(255) NOT NULL DEFAULT '',
-PRIMARY KEY (`name`)
+PRIMARY KEY (`chasisName`),
+foreign key (`powerUnit`) references engineproviders(`companyName`),
+foreign key (`engineName`) references engineproviders(`engineName`)
+
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE  `teamPrincipals` (
 `teamPrincipalID` varchar(255) NOT NULL DEFAULT '',
 `principalName` varchar(255) NOT NULL DEFAULT '',
 `constructorName` varchar(255) NOT NULL DEFAULT '', -- Foreign key
-PRIMARY KEY (`teamPrincipalID`) -- Subject to change
+PRIMARY KEY (`teamPrincipalID`), -- Subject to change
+foreign key (`principalName`) references constructors(`constructorPrincipal`),
+foreign key (`constructorName`) references constructors(`name`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*
@@ -181,5 +205,5 @@ CREATE TABLE `tireCompounds`(
 PRIMARY KEY (`tireName`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-
+show tables;
 
