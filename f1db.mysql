@@ -1,4 +1,5 @@
 use f1;
+-- create database f1;
 
 ## Kasra part of UoD
 CREATE TABLE `circuits` (
@@ -48,11 +49,7 @@ CREATE TABLE `driverStandings` (
 
 CREATE TABLE `drivers` (
   `driverNum` int(11) NOT NULL AUTO_INCREMENT,
-  `number` int(11) DEFAULT NULL,
-  `drivercode` varchar(3) DEFAULT NULL,
-  `firstname` varchar(255) NOT NULL DEFAULT '',
-  `middlename` varchar(255) NOT NULL DEFAULT '',
-  `surname` varchar(255) NOT NULL DEFAULT '',
+	`driverName` varchar (250) NOT NULL,
   `dob` date DEFAULT NULL,
   `nationality` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`driverNum`)
@@ -73,18 +70,6 @@ CREATE TABLE `seasons` (
 
 ## Navs second part of UoD
 
-
-CREATE TABLE `constructorResults` (
-  `constructorResultsId` int(11) NOT NULL AUTO_INCREMENT,
-  `pointsGained` float DEFAULT NULL,
-  `raceId` int(11) NOT NULL DEFAULT '0',
-  `constructorId` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`constructorResultsId`),
-  FOREIGN KEY (`constructorId`) references constructors(`constructorId`),
-  FOREIGN KEY (`raceId`) references races(`raceId`)
-  -- FOREIGN KEY (`pointsGained`) references races(`raceId`)
-);
-
 -- Add timing composite key with attr (secs, min, millisecs)
 CREATE TABLE `lapTimes` (
   `driverNum` int(11) NOT NULL,
@@ -93,11 +78,10 @@ CREATE TABLE `lapTimes` (
   `raceId` int(11) NOT NULL,
   `lap` int(11) NOT NULL,
   `position` int(11) DEFAULT NULL,
-  PRIMARY KEY (`raceId`,`driverNum`,`lap`),
+  PRIMARY KEY (`raceId`,`driverNum`),
   KEY `raceId` (`driverNum`),
   foreign key (`raceId`) references races(`raceId`),
   foreign key (`driverNum`) references drivers(`driverNum`)
-  -- foreign key (`dirverName`) references drivers(`driver
 );
 
 
@@ -130,13 +114,24 @@ CREATE TABLE `results` (
   `fastestLap` varchar(255) DEFAULT NULL,
   `fastestLapTime` varchar(255) DEFAULT NULL,
   `grid` int(11) NOT NULL DEFAULT '0',
-  `points` float NOT NULL DEFAULT '0',
+  `points` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`resultId`),
+  KEY (`points`),
   foreign key (`raceId`) references races(`raceId`),
   foreign key (`driverNum`) references drivers(`driverNum`),
   foreign key (`constructorId`) references constructors(`constructorId`)
 );
 
+CREATE TABLE `constructorResults` (
+  `constructorResultsId` int(11) NOT NULL AUTO_INCREMENT,
+  `points` int(11) NOT NULL DEFAULT '0',
+  `raceId` int(11) NOT NULL DEFAULT '0',
+  `constructorId` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`constructorResultsId`),
+  FOREIGN KEY (`constructorId`) references constructors(`constructorId`),
+  FOREIGN KEY (`raceId`) references races(`raceId`),
+  FOREIGN KEY (`points`) references results(`points`)
+);
 
 -- add timing composite key with attr (minutes, seconds, millisecs)
 CREATE TABLE `sprintResults` (
@@ -206,4 +201,3 @@ PRIMARY KEY (`tireName`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 show tables;
-
